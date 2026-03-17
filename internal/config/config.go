@@ -3,8 +3,9 @@ package config
 import (
 	"context"
 	"log"
+	"os"
 
-	firebase "firebase.google.com/go/v4" 
+	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
 )
 
@@ -15,8 +16,10 @@ func Init_firebase() *firebase.App {
 		DatabaseURL: "https://portfolio-b755c-default-rtdb.asia-southeast1.firebasedatabase.app/",
 	}
 
-	// This is the secure 2026 method we discussed!
-	opt := option.WithAuthCredentialsFile(option.ServiceAccount, "firebase-key.json")
+	jsonData := os.Getenv("FIREBASE_SERVICE_ACCOUNT")
+
+	
+	opt := option.WithCredentialsJSON([]byte(jsonData))
 
 	app, err := firebase.NewApp(ctx, config, opt)
 	if err != nil {
