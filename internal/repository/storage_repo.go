@@ -16,7 +16,7 @@ func New_Storage_repo() *Storage_repo {
 	return &Storage_repo{}
 }
 
-func (s *Storage_repo) UploadImage(ctx context.Context, file multipart.File, header *multipart.FileHeader) (string, error) {
+func (s *Storage_repo) UploadFile(ctx context.Context, file multipart.File, header *multipart.FileHeader, folder string, resourceType string) (string, error) {
 	cld, err := cloudinary.NewFromParams(
 		os.Getenv("CLOUDINARY_CLOUD_NAME"),
 		os.Getenv("CLOUDINARY_API_KEY"),
@@ -27,11 +27,20 @@ func (s *Storage_repo) UploadImage(ctx context.Context, file multipart.File, hea
 	}
 
 	resp, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
-		Folder: "projects",
+		Folder:       folder,
+		ResourceType: resourceType,
 	})
 	if err != nil {
-		return "", fmt.Errorf("failed to upload image: %w", err)
+		return "", fmt.Errorf("failed to upload file: %w", err)
 	}
 
 	return resp.SecureURL, nil
+}
+
+func (s *Storage_repo) UploadImage(ctx context.Context, file multipart.File, header *multipart.FileHeader) (string, error) {
+	return s.UploadFile(ctx, file, header, "projects", "image")
+}
+
+func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header *multipart.FileHeader) (string, error) {
+	return s.UploadFile(ctx, file, header, "cvs", "raw")
 }

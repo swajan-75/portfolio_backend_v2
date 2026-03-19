@@ -53,6 +53,10 @@ func main() {
 	storageService := service.New_Storage_Service(storageRepo)
 	storageHandler := handlers.New_Storage_Handler(storageService)
 
+    cvRepo      := repository.New_CV_repo(dbClient)
+    cvService   := service.New_CV_Service(cvRepo, storageRepo)
+    cvHandler   := handlers.New_CV_Handler(cvService)
+
 	// 5. Gin Setup
 	server := gin.Default()
 
@@ -70,7 +74,7 @@ func main() {
 	})
 
 	// 6. Routes
-	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler, authClient)
+	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler,cvHandler, authClient)
 
 	server.Run(":8000")
 }

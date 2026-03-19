@@ -17,6 +17,7 @@ func SetupRoutes(
 	adminHanler *handlers.Admin_handler,
 	trackVisite *handlers.StatsHandler,
 	storageHandler *handlers.Storage_Handler, 
+	cvHandler *handlers.CV_Handler,
 	authClient *auth.Client,
 ) {
 	login_limiter := middleware.NewIPRateLimiter(rate.Limit(5.0/60.0), 3)
@@ -26,6 +27,7 @@ func SetupRoutes(
 	v1.Use(middleware.RateLimitMiddleware(global_limiter))
 	{
 		v1.GET("/projects", projectHandler.GetAll)
+		v1.GET("/cv/active", cvHandler.GetActiveCV)
 		v1.GET("/projects/:slug", projectHandler.GetProject)
 		v1.POST("/otp/verify", middleware.RateLimitMiddleware(login_limiter), otpHandler.Verify_otp)
 		v1.POST("/login", middleware.RateLimitMiddleware(login_limiter), adminHanler.Admin_Login)
@@ -43,6 +45,11 @@ func SetupRoutes(
 			admin.POST("/track/visit", trackVisite.Track_Visitor)
 			admin.POST("/track/downloads", trackVisite.TrackDownload)
 			admin.GET("/track/stats", trackVisite.GetStats)
+
+			admin.POST("/cv", cvHandler.UploadCV)
+			admin.GET("/cv", cvHandler.GetAllCVs)
+			admin.PUT("/cv/:id/active", cvHandler.SetActiveCV)
+			admin.DELETE("/cv/:id", cvHandler.DeleteCV)
 		}
 	}
 }
