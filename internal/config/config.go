@@ -13,7 +13,7 @@ func Init_firebase() *firebase.App {
 	ctx := context.Background()
 
 	config := &firebase.Config{
-		DatabaseURL: "https://portfolio-b755c-default-rtdb.asia-southeast1.firebasedatabase.app/",
+		DatabaseURL: os.Getenv("FIREBASE_DB_URL"),
 	}
 
 	jsonData := os.Getenv("FIREBASE_SERVICE_ACCOUNT")

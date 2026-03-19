@@ -114,16 +114,7 @@ htmlBody := `
 
 
 	FromEmail := "onboarding@resend.dev"
-	// Password := os.Getenv("SMTP_PASSWORD")
-	// smtpHost := os.Getenv("SMTP_HOST")
-	// smtpPort := os.Getenv("SMTP_PORT")
 	 resend_api_key := os.Getenv("RESEND_API_KEY")
-
-	// //smtp_Port_int,err := strconv.Atoi(smtpPort);
-	// if err != nil {
-	// 	smtp_Port_int = 587;
-	// }
-	//address := smtpHost + ":" + smtpPort
 
 	resend_client := resend.NewClient(resend_api_key)
 
@@ -140,52 +131,6 @@ htmlBody := `
 		return fmt.Errorf("resend error: %v", err)
 	}
 	fmt.Printf("📧 OTP Sent Successfully! Message ID: %s\n", sent.Id)
-    
-
-
-
-
-
-
-
-	// m := gomail.NewMessage()
-	// m.SetHeader("From",FromEmail)
-	// m.SetHeader("To",email)
-	// m.SetHeader("Subject", "Your Portfolio Admin OTP")
-    // m.SetBody("text/html", "Your OTP code is: <b>" + code + "</b>")
-
-	// d := gomail.NewDialer(
-    //     smtpHost, 
-    //     smtp_Port_int, 
-    //     FromEmail, 
-    //     Password,
-    // )
-
-    // // This is the part that prevents the "Hang"
-    // if err := d.DialAndSend(m); err != nil {
-    //     log.Printf("❌ SMTP Error: %v", err)
-    //     return err
-    // }
-    // return nil
-
-
-	//fmt.Printf("DEBUG: Host is |%s|\n", smtpHost)
-	// fmt.Printf("DEBUG: Port is |%s|\n", smtpPort)
-
-	// auth := smtp.PlainAuth(
-	// 	"",
-	// 	FromEmail,
-	// 	Password,
-	// 	smtpHost,
-	// )
-	// msg := []byte("Subject: Portfolio Login OTP\r\n\r\nYour code is: " + code)
-
-	// err := smtp.SendMail(address, auth, FromEmail, []string{email}, msg)
-	// if err != nil {
-	// 	return errors.New("unable to send OTP email. please check your network or configuration")
-
-	// }
-	//safeEmail := base64.StdEncoding.EncodeToString([]byte(email))
 
 	safeEmail := safe_email(email)
 

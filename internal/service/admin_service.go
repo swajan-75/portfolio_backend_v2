@@ -30,7 +30,8 @@ type FirebaseSignInResponse struct {
 
 func (s *Admin_Service) Login(c context.Context,email string , password string)(error){
 	api_key := os.Getenv("FIREBASE_API_KEY")
-	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s",api_key)
+	login_url := os.Getenv("LOGIN_PATH")
+	url := fmt.Sprintf("%s%s",login_url,api_key)
 
 	payload,_ :=json.Marshal(map[string]interface{}{
 		"email" : email,
@@ -45,13 +46,13 @@ func (s *Admin_Service) Login(c context.Context,email string , password string)(
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK{
-		return errors.New("invalid email or password")
+		return errors.New("Invalid email or password")
 	}
 
 	var login_resp FirebaseSignInResponse
 
 	if err := json.NewDecoder(res.Body).Decode(&login_resp); err !=nil {
-		return errors.New("failed to parse authentication response")
+		return errors.New("Invalid email or password")
 	}
 
 	// err = s.OtpService.Send_otp(c,email,login_resp.IdToken)
