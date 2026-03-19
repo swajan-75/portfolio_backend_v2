@@ -140,7 +140,7 @@ htmlBody := `
 		return fmt.Errorf("resend error: %v", err)
 	}
 	fmt.Printf("📧 OTP Sent Successfully! Message ID: %s\n", sent.Id)
-    return nil
+    
 
 
 
