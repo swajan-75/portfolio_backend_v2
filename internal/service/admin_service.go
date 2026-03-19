@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
+	//"fmt"
 	"net/http"
 	"os"
 )
@@ -31,7 +31,7 @@ type FirebaseSignInResponse struct {
 func (s *Admin_Service) Login(c context.Context,email string , password string)(error){
 	api_key := os.Getenv("FIREBASE_API_KEY")
 	login_url := os.Getenv("LOGIN_PATH")
-	url := fmt.Sprintf("%s%s",login_url,api_key)
+	url := login_url+api_key
 
 	payload,_ :=json.Marshal(map[string]interface{}{
 		"email" : email,
