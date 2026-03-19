@@ -39,7 +39,7 @@ func (s *OTP_handler) Verify_otp (c *gin.Context){
         })
         return
 	}
-	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("access_token",idToken,3600,"/","",true,true)
 
 	c.JSON(http.StatusOK, gin.H{
