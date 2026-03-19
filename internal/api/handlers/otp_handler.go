@@ -40,7 +40,7 @@ func (s *OTP_handler) Verify_otp (c *gin.Context){
         return
 	}
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("access_token",idToken,3600,"/","localhost",false,true)
+	c.SetCookie("access_token",idToken,3600,"/","",true,true)
 
 	c.JSON(http.StatusOK, gin.H{
         "message": "OTP Verified successfully. Welcome Admin.",
