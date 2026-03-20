@@ -53,7 +53,7 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 
 	resp, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
 		Folder:       "cvs",
-		ResourceType: "raw",
+		ResourceType: "auto",
 	})
 	if err != nil {
 		return "", fmt.Errorf("failed to upload CV: %w", err)
