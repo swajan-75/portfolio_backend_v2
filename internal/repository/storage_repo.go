@@ -52,15 +52,21 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 		return "", fmt.Errorf("failed to init cloudinary: %w", err)
 	}
 
-	resp, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
+	uploadParams := uploader.UploadParams{
 		Folder:       "cvs",
 		ResourceType: "raw",
-	})
+		UniqueFilename: func() *bool { b := true; return &b }(),
+	}
+
+	fmt.Println("Uploading with ResourceType:", uploadParams.ResourceType) // ← debug log
+
+	resp, err := cld.Upload.Upload(ctx, file, uploadParams)
 	if err != nil {
 		return "", fmt.Errorf("failed to upload CV: %w", err)
 	}
 
-	
+	fmt.Println("Uploaded URL:", resp.SecureURL) // ← debug log
+
 	url := strings.Replace(resp.SecureURL, "/upload/", "/upload/fl_attachment/", 1)
 	return url, nil
 }
