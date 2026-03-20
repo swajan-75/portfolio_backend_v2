@@ -59,10 +59,8 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 		return "", fmt.Errorf("failed to upload CV: %w", err)
 	}
 
-	// SDK bug: always returns /image/upload/ even for raw
-	// manually build the correct raw URL using the public_id
 	cloudName := os.Getenv("CLOUDINARY_CLOUD_NAME")
-	url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/%s", cloudName, resp.PublicID)
+	url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/v%d/%s", cloudName, resp.Version, resp.PublicID)
 
 	fmt.Println("Final URL:", url)
 	return url, nil
