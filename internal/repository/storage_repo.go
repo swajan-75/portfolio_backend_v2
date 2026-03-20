@@ -63,5 +63,5 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 	url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/v%d/%s", cloudName, resp.Version, resp.PublicID)
 
 	fmt.Println("Final URL:", url)
-	return url, nil
+	return resp.SecureURL, nil
 }
