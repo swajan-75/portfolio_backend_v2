@@ -41,27 +41,40 @@ func (s *Storage_repo) UploadImage(ctx context.Context, file multipart.File, hea
 	return s.UploadFile(ctx, file, header, "projects", "image")
 }
 
-func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header *multipart.FileHeader) (string, error) {
+func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header *multipart.FileHeader) (string, string, error) { // ← returns url AND publicID
 	cld, err := cloudinary.NewFromParams(
 		os.Getenv("CLOUDINARY_CLOUD_NAME"),
 		os.Getenv("CLOUDINARY_API_KEY"),
 		os.Getenv("CLOUDINARY_API_SECRET"),
 	)
 	if err != nil {
-		return "", fmt.Errorf("failed to init cloudinary: %w", err)
+		return "", "", fmt.Errorf("failed to init cloudinary: %w", err)
 	}
 
 	resp, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
 		Folder:       "cvs",
-		ResourceType: "auto",
+		ResourceType: "raw",
 	})
 	if err != nil {
-		return "", fmt.Errorf("failed to upload CV: %w", err)
+		return "", "", fmt.Errorf("failed to upload CV: %w", err)
 	}
 
-	cloudName := os.Getenv("CLOUDINARY_CLOUD_NAME")
-	url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/v%d/%s", cloudName, resp.Version, resp.PublicID)
+	//url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/%s.pdf", os.Getenv("CLOUDINARY_CLOUD_NAME"), resp.PublicID)
+	return resp.SecureURL, resp.PublicID, nil
+}
+func (s *Storage_repo) DeleteFile(ctx context.Context, publicID string, resourceType string) error {
+	cld, err := cloudinary.NewFromParams(
+		os.Getenv("CLOUDINARY_CLOUD_NAME"),
+		os.Getenv("CLOUDINARY_API_KEY"),
+		os.Getenv("CLOUDINARY_API_SECRET"),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to init cloudinary: %w", err)
+	}
 
-	fmt.Println("Final URL:", url)
-	return resp.SecureURL, nil
+	_, err = cld.Upload.Destroy(ctx, uploader.DestroyParams{
+		PublicID:     publicID,
+		ResourceType: resourceType,
+	})
+	return err
 }
