@@ -18,7 +18,7 @@ func New_CV_Service(repo *repository.CV_repo, storageRepo *repository.Storage_re
 }
 
 func (s *CV_Service) UploadCV(ctx context.Context, file multipart.File, header *multipart.FileHeader, name string) error {
-	url, err := s.StorageRepo.UploadFile(ctx, file, header, "cvs","raw")
+	url, err := s.StorageRepo.UploadCV(ctx, file, header)
 	if err != nil {
 		return err
 	}
