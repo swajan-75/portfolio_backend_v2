@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"portfolio_backend_go/internal/service"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,13 +24,13 @@ func (h *CV_Handler) UploadCV(c *gin.Context) {
 	}
 	defer file.Close()
 
-	// validate PDF only
-	if header.Header.Get("Content-Type") != "application/pdf" {
+	// remove strict content-type check — browsers sometimes send
+	// "application/octet-stream" for PDFs, so check by extension instead
+	if !strings.HasSuffix(strings.ToLower(header.Filename), ".pdf") {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Only PDF files are allowed"})
 		return
 	}
 
-	// 5MB max
 	if header.Size > 5*1024*1024 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "CV must be under 5MB"})
 		return
@@ -47,7 +48,6 @@ func (h *CV_Handler) UploadCV(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "CV uploaded successfully!"})
 }
-
 func (h *CV_Handler) GetAllCVs(c *gin.Context) {
 	cvs, err := h.Service.GetAllCVs(c.Request.Context())
 	if err != nil {

@@ -60,7 +60,7 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 		return "", fmt.Errorf("failed to upload CV: %w", err)
 	}
 
-	// force browser to download instead of opening
+	
 	url := strings.Replace(resp.SecureURL, "/upload/", "/upload/fl_attachment/", 1)
 	return url, nil
 }
