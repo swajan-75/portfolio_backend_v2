@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"mime/multipart"
 	"os"
-	"strings"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -52,21 +51,19 @@ func (s *Storage_repo) UploadCV(ctx context.Context, file multipart.File, header
 		return "", fmt.Errorf("failed to init cloudinary: %w", err)
 	}
 
-	uploadParams := uploader.UploadParams{
+	resp, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
 		Folder:       "cvs",
 		ResourceType: "raw",
-		UniqueFilename: func() *bool { b := true; return &b }(),
-	}
-
-	fmt.Println("Uploading with ResourceType:", uploadParams.ResourceType) // ← debug log
-
-	resp, err := cld.Upload.Upload(ctx, file, uploadParams)
+	})
 	if err != nil {
 		return "", fmt.Errorf("failed to upload CV: %w", err)
 	}
 
-	fmt.Println("Uploaded URL:", resp.SecureURL) // ← debug log
+	// SDK bug: always returns /image/upload/ even for raw
+	// manually build the correct raw URL using the public_id
+	cloudName := os.Getenv("CLOUDINARY_CLOUD_NAME")
+	url := fmt.Sprintf("https://res.cloudinary.com/%s/raw/upload/%s", cloudName, resp.PublicID)
 
-	url := strings.Replace(resp.SecureURL, "/upload/", "/upload/fl_attachment/", 1)
+	fmt.Println("Final URL:", url)
 	return url, nil
 }
