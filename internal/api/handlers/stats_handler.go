@@ -56,12 +56,6 @@ func (h *StatsHandler) Track_Visitor(c *gin.Context) {
         c.SetCookie("visited", "true", 31536000, "/", "", true, true)
     }
 
-    // c.JSON(http.StatusOK, gin.H{
-    //     "message": "Visitor tracking processed",
-    //     "is_new":  err != nil, // true if it's their first time
-    //     "geo":     geo,         // This contains the full ip-api response
-    //     "ip":      ip,
-    // })
 
 	c.Status(http.StatusOK)
 }
