@@ -21,7 +21,7 @@ func SetupRoutes(
 	authClient *auth.Client,
 ) {
 	login_limiter := middleware.NewIPRateLimiter(rate.Limit(5.0/60.0), 3)
-	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 3)
+	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 30)
 
 	v1 := r.Group("/api/v1")
 	v1.Use(middleware.RateLimitMiddleware(global_limiter))
