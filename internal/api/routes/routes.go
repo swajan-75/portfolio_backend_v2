@@ -21,7 +21,7 @@ func SetupRoutes(
 	authClient *auth.Client,
 ) {
 	login_limiter := middleware.NewIPRateLimiter(rate.Limit(5.0/60.0), 3)
-	global_limiter := middleware.NewIPRateLimiter(rate.Limit(100.0/60), 3)
+	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 3)
 
 	v1 := r.Group("/api/v1")
 	v1.Use(middleware.RateLimitMiddleware(global_limiter))
@@ -31,18 +31,18 @@ func SetupRoutes(
 		v1.GET("/projects/:slug", projectHandler.GetProject)
 		v1.POST("/otp/verify", middleware.RateLimitMiddleware(login_limiter), otpHandler.Verify_otp)
 		v1.POST("/login", middleware.RateLimitMiddleware(login_limiter), adminHanler.Admin_Login)
-
+		v1.POST("/track/visit", trackVisite.Track_Visitor)
 		admin := v1.Group("/admin")
 		admin.Use(middleware.Auth_Middleware(authClient))
 		{
 			admin.POST("/projects", projectHandler.CreateProject)
 			admin.PUT("/projects/:slug", projectHandler.UpdateProject)
 			admin.DELETE("/projects/:slug", projectHandler.DeleteProject)
-			admin.POST("/upload/image", storageHandler.UploadImage) // ← add this
+			admin.POST("/upload/image", storageHandler.UploadImage) 
+			
 
 			admin.GET("/checkAuth", adminHanler.CheckAuth)
 			admin.POST("/logout", adminHanler.Logout)
-			admin.POST("/track/visit", trackVisite.Track_Visitor)
 			admin.POST("/track/downloads", trackVisite.TrackDownload)
 			admin.GET("/track/stats", trackVisite.GetStats)
 

@@ -19,7 +19,7 @@ func New_CV_Service(repo *repository.CV_repo, storageRepo *repository.Storage_re
 }
 
 func (s *CV_Service) UploadCV(ctx context.Context, file multipart.File, header *multipart.FileHeader, name string) error {
-	url, publicID, err := s.StorageRepo.UploadCV(ctx, file, header) // ← get publicID too
+	url, publicID, err := s.StorageRepo.UploadCV(ctx, file, header) 
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func (s *CV_Service) UploadCV(ctx context.Context, file multipart.File, header *
 	cv := models.CV{
 		Name:      name,
 		URL:       url,
-		PublicID:  publicID, // ← store it
+		PublicID:  publicID, 
 		Active:    false,
 		CreatedAt: time.Now().Unix(),
 	}
@@ -36,7 +36,7 @@ func (s *CV_Service) UploadCV(ctx context.Context, file multipart.File, header *
 }
 
 func (s *CV_Service) DeleteCV(ctx context.Context, id string) error {
-	// get the CV first to retrieve public_id
+	
 	cvs, err := s.Repo.Get_All_CVs(ctx)
 	if err != nil {
 		return err
@@ -47,15 +47,15 @@ func (s *CV_Service) DeleteCV(ctx context.Context, id string) error {
 		return fmt.Errorf("cv not found")
 	}
 
-	// delete from cloudinary
+
 	if publicID, ok := cv["public_id"].(string); ok && publicID != "" {
 		if err := s.StorageRepo.DeleteFile(ctx, publicID, "raw"); err != nil {
 			fmt.Println("Warning: failed to delete from Cloudinary:", err)
-			// don't return error — still delete from Firebase
+			
 		}
 	}
 
-	// delete from firebase
+	
 	return s.Repo.Delete_CV(ctx, id)
 }
 
