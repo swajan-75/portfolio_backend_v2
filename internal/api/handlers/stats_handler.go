@@ -53,7 +53,7 @@ func (h *StatsHandler) Track_Visitor(c *gin.Context) {
         })
 
 
-        c.SetCookie("visited", "true", 31536000, "/", "", false, true)
+        c.SetCookie("visited", "true", 31536000, "/", "", true, true)
     }
 
     // c.JSON(http.StatusOK, gin.H{
