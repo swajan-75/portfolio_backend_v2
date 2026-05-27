@@ -77,6 +77,7 @@ func main() {
 			"http://127.0.0.1:3000":     true,
 			"http://127.0.0.1:3001":     true,
 			"http://127.0.0.1:3002":     true,
+			"https://www.swajan.dev/": true,
 		}
 
 		origin := c.Request.Header.Get("Origin")
