@@ -8,6 +8,7 @@ type Create_Project_dto struct {
 	GithubURL   string   `json:"github_url"`
 	Category    string   `json:"category" binding:"required"`
 	ImageLink   string   `json:"image_link"`
+	Rank        int      `json:"rank"`
 }
 
 type Update_Project_dto struct {
@@ -18,6 +19,7 @@ type Update_Project_dto struct {
 	GithubURL   string   `json:"github_url"`
 	Category    string   `json:"category"`
 	ImageLink   string   `json:"image_link"`
+	Rank        int      `json:"rank"`
 }
 
 type ProjectResponse struct {
@@ -28,4 +30,5 @@ type ProjectResponse struct {
 	LiveURL     string   `json:"live_url"`
 	GithubURL   string   `json:"github_url"`
 	ImageURL    string   `json:"image_url"`
+	Rank        int      `json:"rank"`
 }

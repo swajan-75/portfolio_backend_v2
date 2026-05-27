@@ -11,6 +11,7 @@ type Project struct {
 	LiveURl     string    `json:"live_url"`
 	GithubURL   string    `json:"github_url"`
 	ImageLink   string    `json:"image_link"`
+	Rank        int       `json:"rank"`
 	CreatedAt   int64     `json:"created_at"`
 	UpdatedAt   int64     `json:"updated_at"`
 }

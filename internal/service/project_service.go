@@ -43,6 +43,7 @@ func (s *Project_Service) CreateProject(ctx context.Context, req dto.Create_Proj
 		LiveURl:     req.LiveURL,
 		GithubURL:   req.GithubURL,
 		ImageLink:   req.ImageLink,
+		Rank:        req.Rank,
 		CreatedAt:   time.Now().Unix(),
 		UpdatedAt:   time.Now().Unix(),
 		TechStack:   req.TechStack,
@@ -77,6 +78,7 @@ func (s *Project_Service) UpdateProject(ctx context.Context, slug string, req dt
 
 	updates := map[string]interface{}{
 		"updated_at": time.Now().Unix(),
+		"rank":       req.Rank,
 	}
 
 	if req.Title != "" {
