@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"portfolio_backend_go/internal/api/handlers"
 	"portfolio_backend_go/internal/api/routes"
 	"portfolio_backend_go/internal/config"
@@ -99,5 +100,11 @@ func main() {
 	// 6. Routes
 	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler, cvHandler, profileHandler, authClient)
 
-	server.Run(":8000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	
+	log.Printf("Server starting on port %s", port)
+	server.Run(":" + port)
 }
