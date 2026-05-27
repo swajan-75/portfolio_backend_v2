@@ -65,9 +65,9 @@ func main() {
 	server := gin.Default()
 
 	server.Use(func(c *gin.Context) {
-<<<<<<< HEAD
+
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://swajan.vercel.app")
-=======
+
 		allowedOrigins := map[string]bool{
 			"https://swajan.vercel.app": true,
 			"http://localhost:3000":     true,
@@ -83,7 +83,7 @@ func main() {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 
->>>>>>> 8157a86 (new feature)
+
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "..., Cookie")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
@@ -97,11 +97,11 @@ func main() {
 	})
 
 	// 6. Routes
-<<<<<<< HEAD
+
 	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler,cvHandler, authClient)
-=======
+
 	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler, cvHandler, profileHandler, authClient)
->>>>>>> 8157a86 (new feature)
+
 
 	server.Run(":8000")
 }
