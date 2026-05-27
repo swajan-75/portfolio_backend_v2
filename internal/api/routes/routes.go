@@ -21,17 +21,8 @@ func SetupRoutes(
 	profileHandler *handlers.Profile_handler,
 	authClient *auth.Client,
 ) {
-<<<<<<< HEAD
-	login_limiter := middleware.NewIPRateLimiter(rate.Limit(5.0/60.0), 3)
-<<<<<<< HEAD
-	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 30)
-=======
-	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 3)
->>>>>>> 4294216 ( fix the visited cookie)
-=======
 	login_limiter := middleware.NewIPRateLimiter(rate.Limit(5.0/60.0), 5)
 	global_limiter := middleware.NewIPRateLimiter(rate.Limit(200.0/60), 20)
->>>>>>> 8157a86 (new feature)
 
 	v1 := r.Group("/api/v1")
 	v1.Use(middleware.RateLimitMiddleware(global_limiter))
@@ -43,10 +34,8 @@ func SetupRoutes(
 		v1.POST("/otp/verify", middleware.RateLimitMiddleware(login_limiter), otpHandler.Verify_otp)
 		v1.POST("/login", middleware.RateLimitMiddleware(login_limiter), adminHanler.Admin_Login)
 		v1.POST("/track/visit", trackVisite.Track_Visitor)
-<<<<<<< HEAD
-=======
 		v1.POST("/track/downloads", trackVisite.TrackDownload)
->>>>>>> 4294216 ( fix the visited cookie)
+
 		admin := v1.Group("/admin")
 		admin.Use(middleware.Auth_Middleware(authClient))
 		{
@@ -58,11 +47,6 @@ func SetupRoutes(
 
 			admin.GET("/checkAuth", adminHanler.CheckAuth)
 			admin.POST("/logout", adminHanler.Logout)
-<<<<<<< HEAD
-			admin.POST("/track/downloads", trackVisite.TrackDownload)
-=======
-			//admin.POST("/track/downloads", trackVisite.TrackDownload)
->>>>>>> 4294216 ( fix the visited cookie)
 			admin.GET("/track/stats", trackVisite.GetStats)
 
 			admin.POST("/cv", cvHandler.UploadCV)
