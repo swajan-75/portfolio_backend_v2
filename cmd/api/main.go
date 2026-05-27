@@ -97,11 +97,7 @@ func main() {
 	})
 
 	// 6. Routes
-
-	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler,cvHandler, authClient)
-
 	routes.SetupRoutes(server, projectHandler, otpHandler, adminHandler, trackVisite, storageHandler, cvHandler, profileHandler, authClient)
-
 
 	server.Run(":8000")
 }
